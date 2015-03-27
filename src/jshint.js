@@ -1214,7 +1214,7 @@ var JSHINT = (function() {
          (node.type === "null" && !state.option.eqnull) ||
         node.type === "true" ||
         node.type === "false" ||
-        node.type === "undefined");
+        (node.type === "undefined" && !state.option.eqnull));
   }
 
   // Checks whether the 'typeof' operator is used with the correct
@@ -2150,7 +2150,7 @@ var JSHINT = (function() {
   bitwise("^", "bitxor", 80);
   bitwise("&", "bitand", 90);
   relation("==", function(left, right) {
-    var eqnull = state.option.eqnull && (left.value === "null" || right.value === "null");
+    var eqnull = state.option.eqnull && (left.value === "null" || right.value === "null" || left.value === "undefined" || right.value === "undefined");
 
     switch (true) {
       case !eqnull && state.option.eqeqeq:
@@ -2183,7 +2183,7 @@ var JSHINT = (function() {
   });
   relation("!=", function(left, right) {
     var eqnull = state.option.eqnull &&
-        (left.value === "null" || right.value === "null");
+        (left.value === "null" || right.value === "null" || left.value === "undefined" || right.value === "undefined");
 
     if (!eqnull && state.option.eqeqeq) {
       this.from = this.character;
